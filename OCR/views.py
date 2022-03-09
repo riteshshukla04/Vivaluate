@@ -5,7 +5,7 @@ from PIL import Image
 import pytesseract
 
 # Create your views here.
-@csrf_exempt
+
 def index(request):
     s=""
     if (request.method=="POST"):
