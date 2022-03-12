@@ -9,6 +9,7 @@ class Teacher(models.Model):
     name=models.CharField(max_length=200)
     def __str__(self) -> str:
         return self.name
+        
 
 class Student(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
@@ -17,7 +18,9 @@ class Student(models.Model):
         return self.name
 
 class Classroom(models.Model):
+    code=models.CharField(max_length=200,null=True,blank=True,unique=True)
     name=models.CharField(max_length=200,null=True,blank=True)
+    description=models.TextField(null=True,blank=True)
     student=models.ManyToManyField(Student)
     teacher=models.ForeignKey(Teacher,on_delete=models.CASCADE)
     def __str__(self) -> str:
