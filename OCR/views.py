@@ -1,6 +1,6 @@
 
 import imp
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render,HttpResponse,redirect
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
@@ -43,12 +43,14 @@ def Login(request):
 @authenticated_user
 def addStudent(request):
     if(request.method=="POST"):
-        
-        code=request.POST["code"]
-        classroom=Classroom.objects.get(code=code)
-        student=Student.objects.get(user=request.user)
-        classroom.student.add(student)
-        classroom.save()
+        try:
+            code=request.POST["code"]
+            classroom=Classroom.objects.get(code=code)
+            student=Student.objects.get(user=request.user)
+            classroom.student.add(student)
+            classroom.save()
+        except:
+             messages.info(request,"Doesnt exist")  
         
         return redirect("/")
     return render(request,"classlist.html")
