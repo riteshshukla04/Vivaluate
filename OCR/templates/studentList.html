@@ -100,15 +100,15 @@
 </nav>
 
 <div class="d-flex flex-row justify-content-center container my-5">
-    {% for i in s %}
+    {% for i in t %}
     <div class="card m-1" style="width: 18rem;">
         <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
     
         
         <div class="card-body">
             <h5 class="card-title">{{ i.name }}</h5>
-            <p class="card-text">Class description</p>
-            <a href="#" class="btn btn-primary">Enter class</a>
+            <p class="card-text">{{i.user.email}}</p>
+            
         </div>
         
     </div>

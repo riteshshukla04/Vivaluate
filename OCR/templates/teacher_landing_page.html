@@ -63,7 +63,7 @@
             logout
         </button>
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
-            Join Class
+            Create Class
         </button>
 
         <!-- Modal -->
@@ -78,9 +78,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="/add/" method="post">
+                        <form action="/addclass/" method="post">
                             {% csrf_token %}
-                            <input type="text" name="code" id="code">
+                            <input type="text" name="classname" id="classname">
                             <input type="submit">
                         </form>
                     </div>
@@ -108,7 +108,11 @@
         <div class="card-body">
             <h5 class="card-title">{{ i.name }}</h5>
             <p class="card-text">Class description</p>
-            <a href="#" class="btn btn-primary">Enter class</a>
+            <div style="display: flex; ">
+                <a href="/classlist/{{i.id}}" class="btn btn-primary">Enter class</a>
+                <p class="mx-2">{{i.code}}</p>
+            </div>
+           
         </div>
         
     </div>

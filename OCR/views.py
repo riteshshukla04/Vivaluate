@@ -43,13 +43,15 @@ def Login(request):
 @authenticated_user
 def addStudent(request):
     if(request.method=="POST"):
+        
         code=request.POST["code"]
         classroom=Classroom.objects.get(code=code)
         student=Student.objects.get(user=request.user)
         classroom.student.add(student)
         classroom.save()
-        return render(request,"addStudent.html")
-    return render(request,"addStudent.html")
+        
+        return redirect("/")
+    return render(request,"classlist.html")
 
 def Test(request):
     if request.user.groups.filter(name='Student').exists():
@@ -121,6 +123,7 @@ def addClassroom(request):
         name=request.POST["classname"]
         s=Classroom.objects.create(teacher=Teacher.objects.get(user=request.user),code=s,name=name)
         s.save()
+        return redirect("/teacher")
     return render(request,'addclass.html',{"s":s})
 
 
@@ -128,3 +131,25 @@ def addClassroom(request):
 def classlist(request):
     s=Classroom.objects.filter(student=Student.objects.get(user=request.user))
     return render(request,'classlist.html',{"s":s})
+
+
+@allowed_users(["Teacher"])
+def TeacherLandingPage(request):
+    s=Classroom.objects.filter(teacher=Teacher.objects.get(user=request.user))
+    return render(request,'teacher_landing_page.html',{"s":s})
+
+
+def MainIndex(request):
+    if request.user.groups.filter(name='Student').exists():
+         return redirect("/student")
+    if request.user.groups.filter(name='Teacher').exists():
+         return redirect("/teacher")
+    if not request.user.is_authenticated:
+        return redirect("/login")
+    return redirect("/login")
+
+
+def studentList(request,pk):
+    s=Classroom.objects.get(id=pk)
+    t=s.student.all()
+    return render(request,"studentList.html",{"t":t})
