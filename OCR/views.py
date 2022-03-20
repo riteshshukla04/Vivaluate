@@ -53,7 +53,7 @@ def addStudent(request):
              messages.info(request,"Doesnt exist")  
         
         return redirect("/")
-    return render(request,"classlist.html")
+    return render(request,"tarpg.html")
 
 def Test(request):
     if request.user.groups.filter(name='Student').exists():
@@ -76,8 +76,9 @@ def index(request):
 
     return render(request,"index.html",{"s":s})
 
-@unauthenticated_user
+
 @csrf_exempt
+@unauthenticated_user
 def registerPage(request):
     form=CreateUserForm()
     
@@ -95,6 +96,7 @@ def registerPage(request):
             return redirect("/")
     context={'form':form}
     return render(request,'register.html',context)\
+
 
 
 
@@ -132,7 +134,7 @@ def addClassroom(request):
 @allowed_users(["Student"])
 def classlist(request):
     s=Classroom.objects.filter(student=Student.objects.get(user=request.user))
-    return render(request,'classlist.html',{"s":s})
+    return render(request,'tarpg.html',{"s":s})
 
 
 @allowed_users(["Teacher"])
