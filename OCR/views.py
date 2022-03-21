@@ -55,7 +55,7 @@ def addStudent(request):
         return redirect("/")
     return render(request,"tarpg.html")
 
-def Test(request):
+""" def TestFunction(request):
     if request.user.groups.filter(name='Student').exists():
          classroom=Classroom.objects.filter(student=Student.objects.get(user=request.user))
          return render(request,"Test.html",{"classroom":classroom})
@@ -63,7 +63,7 @@ def Test(request):
          classroom=Classroom.objects.filter(teacher=Teacher.objects.get(user=request.user))
          return render(request,"Test.html",{"classroom":classroom})
 
-    return render(request,"Test.html")
+    return render(request,"Test.html") """
     
 
 def index(request):
@@ -144,16 +144,45 @@ def TeacherLandingPage(request):
 
 
 def MainIndex(request):
-    if request.user.groups.filter(name='Student').exists():
-         return redirect("/student")
-    if request.user.groups.filter(name='Teacher').exists():
-         return redirect("/teacher")
-    if not request.user.is_authenticated:
-        return redirect("/login")
-    return redirect("/login")
+    return render(request,"tarplanding.html")
 
 
 def studentList(request,pk):
     s=Classroom.objects.get(id=pk)
     t=s.student.all()
     return render(request,"studentList.html",{"t":t})
+
+
+
+def createTest(request,pk):
+    if request.method=="POST":
+        name=request.POST["name"]
+        test=Test.objects.create(name=name,classroom=Classroom.objects.get(id=pk))
+        test.save()
+        return redirect(f"/testlist/{pk}")
+    return render(request,"TestList.html")
+
+
+def TestList(request,pk):
+    test=Test.objects.filter(classroom=Classroom.objects.get(id=pk))
+    return render(request,'TestList.html',{"test":test})
+
+
+def questionList(request,pk):
+    test=Test.objects.get(id=pk)
+    question=test.questions.all()
+    return render(request,"questionList.html",{"question":question})
+
+
+def createQuestion(request,pk):
+    if request.method=="POST":
+        name=request.POST["name"]
+        marks=request.POST["marks"]
+        answer=request.POST["answer"]
+        question=Question.objects.create(question_desc=name,correct_answer=answer,marks=marks)
+        question.save()
+        test=Test.objects.get(id=pk)
+        test.questions.add(question)
+        test.save()
+        return redirect(f"/questionlist/{pk}")
+    return render(request,"questionList.html")

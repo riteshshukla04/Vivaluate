@@ -1,4 +1,5 @@
 from lib2to3.pygram import pattern_grammar
+from venv import create
 from django.contrib import admin
 from django.urls import path,include
 from . import views
@@ -20,6 +21,11 @@ urlpatterns = [
     path('teacher/',views.TeacherLandingPage),
     path("",views.MainIndex),
     path("ocr/",views.index),
-    path("classlist/<str:pk>",views.studentList)
+    path("classlist/<str:pk>",views.studentList),
+    path("createtest/<str:pk>",views.createTest),
+    path("testlist/<str:pk>",views.TestList),
+    path("questionlist/<str:pk>",views.questionList),
+     path("createquestion/<str:pk>",views.createQuestion),
+
 
 ]
