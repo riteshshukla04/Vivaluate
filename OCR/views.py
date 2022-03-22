@@ -52,7 +52,7 @@ def addStudent(request):
         except:
              messages.info(request,"Doesnt exist")  
         
-        return redirect("/")
+        return redirect("/student")
     return render(request,"tarpg.html")
 
 """ def TestFunction(request):
