@@ -46,10 +46,12 @@ class Test(models.Model):
 class Answer(models.Model):
     question=models.ForeignKey(Question,on_delete=models.CASCADE)
     student=models.ForeignKey(Student,on_delete=models.CASCADE)
-    submitted=models.TextField()
+    submitted=models.ImageField()
     awarded_marks=models.FloatField(null=True,default=True)
     def __str__(self) -> str:
-        return self.question
+        return self.question.question_desc
+
+
 
 
 

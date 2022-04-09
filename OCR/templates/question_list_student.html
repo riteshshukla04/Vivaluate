@@ -59,27 +59,25 @@
         <button type="button" class="btn btn-info mx-3"  onclick="window.location.href='/logout'">
             logout
         </button>
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
-           Create Test
-        </button>
-
+      
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Enter Your Class Code</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Enter Your question</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="/createtest/{{pk}}" method="post">
+                    <form action="/createquestion/{{pk}}" method="post">
                     <div class="modal-body">
                       
                             {% csrf_token %}
-                            <input type="text" name="name" id="name">
-                            
+                            <input type="text" placeholder="Enter Question Description" required name="name" id="name">
+                            <input type="text" placeholder="Enter Correct Answer" required name="answer" id="marks">
+                            <input type="text" placeholder="Enter Marks " required name="marks" id="marks">
                        
                     </div>
                     <div class="modal-footer">
@@ -100,14 +98,16 @@
 </nav>
 
 <div class="d-flex flex-row justify-content-center container my-5">
-    {% for i in t %}
+    {% for i in question %}
     <div class="card m-1" style="width: 18rem;">
         <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
     
         
         <div class="card-body">
-            <h5 class="card-title">{{ i.name }}</h5>
-            <p class="card-text">{{i.user.email}}</p>
+            
+            <h5 class="card-title">{{ i.question_desc  }}</h5>
+            <p class="card-text">{{i.marks}}</p>
+            <a href="/uploadanswer/{{i.id}}/{{pk}}" class="btn btn-primary">Upload Answer</a>
             
         </div>
         
@@ -116,21 +116,7 @@
 </div>
 
 
-<div class="d-flex flex-row justify-content-center container my-5">
-    {% for i in test %}
-    <div class="card m-1" style="width: 18rem;">
-        <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-    
-        
-        <div class="card-body">
-            <h5 class="card-title">{{ i.name }}</h5>
-            <a href="/questionlist/{{i.id}}" class="btn btn-primary">Enter Test</a>
-            
-        </div>
-        
-    </div>
-    {% endfor %}
-</div>
+
 
 </body>
 </html>

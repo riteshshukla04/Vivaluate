@@ -26,6 +26,9 @@ urlpatterns = [
     path("testlist/<str:pk>",views.TestList),
     path("questionlist/<str:pk>",views.questionList),
      path("createquestion/<str:pk>",views.createQuestion),
+     path("testlists/<str:pk>",views.TestListStudent),
+     path("questionlists/<str:pk>",views.questionListStudent),
+     path("uploadanswer/<str:pk>/<str:pk1>",views.Upload_Answer),
 
 
 ]

@@ -134,7 +134,7 @@ def addClassroom(request):
 @allowed_users(["Student"])
 def classlist(request):
     s=Classroom.objects.filter(student=Student.objects.get(user=request.user))
-    return render(request,'tarpg.html',{"s":s})
+    return render(request,'student_landing_page.html',{"s":s})
 
 
 @allowed_users(["Teacher"])
@@ -149,8 +149,10 @@ def MainIndex(request):
 
 def studentList(request,pk):
     s=Classroom.objects.get(id=pk)
+    test=Test.objects.filter(classroom=Classroom.objects.get(id=pk))
     t=s.student.all()
-    return render(request,"studentList.html",{"t":t})
+    
+    return render(request,"studentList.html",{"t":t,"pk":pk,"test":test})
 
 
 
@@ -159,7 +161,7 @@ def createTest(request,pk):
         name=request.POST["name"]
         test=Test.objects.create(name=name,classroom=Classroom.objects.get(id=pk))
         test.save()
-        return redirect(f"/testlist/{pk}")
+        return redirect(f"/classlist/{pk}")
     return render(request,"TestList.html")
 
 
@@ -171,7 +173,7 @@ def TestList(request,pk):
 def questionList(request,pk):
     test=Test.objects.get(id=pk)
     question=test.questions.all()
-    return render(request,"questionList.html",{"question":question})
+    return render(request,"questionList.html",{"question":question,"pk":pk})
 
 
 def createQuestion(request,pk):
@@ -186,3 +188,27 @@ def createQuestion(request,pk):
         test.save()
         return redirect(f"/questionlist/{pk}")
     return render(request,"questionList.html")
+
+def TestListStudent(request,pk):
+    test=Test.objects.filter(classroom=Classroom.objects.get(id=pk))
+    return render(request,'Test_List_Student.html',{"test":test})
+
+
+def questionListStudent(request,pk):
+    test=Test.objects.get(id=pk)
+    question=test.questions.all()
+    return render(request,"question_list_student.html",{"question":question,"pk":pk})
+
+def Upload_Answer(request,pk,pk1):
+    if (request.method=="POST"):
+        question=Question.objects.get(id=pk)
+        
+        image=request.FILES["file"]
+  
+
+
+        answer=Answer.objects.create(question=question,student=Student.objects.get(user=request.user),submitted=image,awarded_marks=10)
+        answer.save()
+        return redirect(f"/questionlists/{pk1}")
+        
+    return render(request,"uploadAnswer.html")
