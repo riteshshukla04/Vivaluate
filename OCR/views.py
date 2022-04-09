@@ -206,9 +206,16 @@ def Upload_Answer(request,pk,pk1):
         image=request.FILES["file"]
   
 
-
-        answer=Answer.objects.create(question=question,student=Student.objects.get(user=request.user),submitted=image,awarded_marks=10)
-        answer.save()
+        ans=Answer.objects.filter(question=question,student=Student.objects.get(user=request.user)).count()
+        ans1=Answer.objects.filter(question=question,student=Student.objects.get(user=request.user))
+        print(ans)
+        if((ans)>0):
+            ans1.submitted=image
+            
+            return redirect(f"/questionlists/{pk1}")
+        else:
+            answer=Answer.objects.create(question=question,student=Student.objects.get(user=request.user),submitted=image,awarded_marks=10)
+            answer.save()
         return redirect(f"/questionlists/{pk1}")
         
     return render(request,"uploadAnswer.html")
