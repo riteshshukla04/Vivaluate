@@ -145,7 +145,7 @@ def TeacherLandingPage(request):
     s=Classroom.objects.filter(teacher=Teacher.objects.get(user=request.user))
     return render(request,'teacher_landing_page.html',{"s":s})
 
-
+@unauthenticated_user
 def MainIndex(request):
     return render(request,"tarplanding.html")
 
@@ -155,7 +155,7 @@ def studentList(request,pk):
     test=Test.objects.filter(classroom=Classroom.objects.get(id=pk))
     t=s.student.all()
     
-    return render(request,"studentList.html",{"t":t,"pk":pk,"test":test})
+    return render(request,"studentList.html",{"t":t,"pk":pk,"test":test,"s":s})
 
 
 
@@ -173,10 +173,11 @@ def TestList(request,pk):
     return render(request,'TestList.html',{"test":test})
 
 
-def questionList(request,pk):
+def questionList(request,pk,pk1):
     test=Test.objects.get(id=pk)
+    classroom=Classroom.objects.get(id=pk1)
     question=test.questions.all()
-    return render(request,"questionList.html",{"question":question,"pk":pk})
+    return render(request,"questionList.html",{"question":question,"pk":pk,"test":test})
 
 
 def createQuestion(request,pk):
@@ -222,3 +223,15 @@ def Upload_Answer(request,pk,pk1):
         return redirect(f"/questionlists/{pk1}")
         
     return render(request,"uploadAnswer.html")
+
+
+def student_list_question(request,pk):
+    question=Question.objects.get(id=pk)
+    answer=Answer.objects.filter(question=Question.objects.get(id=pk))
+    return render(request,"student_List_Question.html",{"answer":answer,"question":question})
+
+def authenticator(request):
+    if request.user.groups.filter(name='Teacher'):
+                return redirect("/teacher")
+    else:
+                return redirect("/student")

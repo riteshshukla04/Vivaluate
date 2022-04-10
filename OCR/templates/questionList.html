@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./test.css">
+
     <title>Document</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -100,23 +100,77 @@
     </div>
 </nav>
 
-<div class="d-flex flex-row justify-content-center container my-5">
-    {% for i in question %}
-    <div class="card m-1" style="width: 18rem;">
-        <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-    
-        
-        <div class="card-body">
-            <h5 class="card-title">{{ i.question_desc  }}</h5>
-            <p class="card-text">{{i.marks}}</p>
-            
-        </div>
-        
+<div class="jumbotron centered mx-5 my-0 bg-light" style="padding: 2rem 2rem;">
+    <div class="container" >
+
+      
+      <h1 class="display-6">Mr/Miss {{request.user.username}}  <img src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/000000/external-teacher-online-learning-vitaliy-gorbachev-lineal-color-vitaly-gorbachev-1.png"/></h1>
+      <p class="lead">Dashboard for class number xyz </p>
+      
+      <hr>
+      
+  
     </div>
-    {% endfor %}
 </div>
 
-
+<div class="container-fluid bg-light " style=" width: 94%;  ">
+    <div class="row my-1 p-2 rounded" style="width:100%;  ">
+        <div class="col text-center rounded" style=" width:100%; border-style: solid; border-color: #7addd8;"><h2 >{{test.name}}</h2></div>
+        
+    </div>
+    <div class="row p-2 rounded">
+        <div class="col-4">
+            {% for i in question %}
+            <div class="row my-2  p-3 rounded " style="border-style: solid; border-color: #7addd8;">
+                <div style="width: 100%;">
+                    <h5>{{i.question_desc }}</h5>
+                    <p>Correct answer : {{i.correct_answer}}</p>
+                    <p>Marks:{{i.marks}} <a class="btn btn-primary " href="/question/studentlist/{{i.id}}" role="button" style="float: right;">Go</a></p>                        
+                </div>
+            </div>
+          
+            {% endfor %}
+        </div>
+        <div class="col-8 my-2">
+            <table class="table table-hover table-striped">
+                <thead style="background-color: #4bc0ba;">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col" >Name</th>
+                      <th scope="col">Question 1</th>
+                      <th scope="col">Question 2</th>
+                      <th scope="col">Question 3</th>
+                    </tr>
+                  </thead>
+                  <tbody style="background-color: aliceblue;">
+                    <tr>
+                        <td>1</td>
+                        <td>G</td>
+                        <td>5</td>
+                        <td>86</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>G</td>
+                        <td>5</td>
+                        <td>86</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>G</td>
+                        <td>5</td>
+                        <td>86</td>
+                        <td>5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<br>
+<br>
 
 
 </body>
