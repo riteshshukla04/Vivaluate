@@ -33,7 +33,10 @@ def Login(request):
         
         if user is not None:
             login(request,user)
-            return redirect("/")
+            if user.groups.filter(name='Teacher'):
+                return redirect("/teacher")
+            else:
+                return redirect("/student")
         else:
            messages.info(request,"Username or password incorrect")             
      
