@@ -34,13 +34,13 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            {% comment %} <li class="nav-item active">
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
 
             <li class="nav-item active">
                 <a class="nav-link" href="#">Your Results <span class="sr-only">(current)</span></a>
-            </li>
+            </li> {% endcomment %}
         
         </ul>
         {% if request.user.is_authenticated %}
@@ -78,9 +78,9 @@
                     <div class="modal-body">
                       
                             {% csrf_token %}
-                            <input type="text" placeholder="Enter Question Description" required name="name" id="name">
-                            <input type="text" placeholder="Enter Correct Answer" required name="answer" id="marks">
-                            <input type="text" placeholder="Enter Marks " required name="marks" id="marks">
+                            <input class="my-2" type="text" placeholder="Question Description" required name="name" id="name">
+                            <input class="my-2" type="text" placeholder="Correct Answer" required name="answer" id="marks">
+                            <input class="my-2" type="text" placeholder="Marks " required name="marks" id="marks">
                        
                     </div>
                     <div class="modal-footer">
