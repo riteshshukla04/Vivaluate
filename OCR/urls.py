@@ -31,7 +31,7 @@ urlpatterns = [
      path("uploadanswer/<str:pk>/<str:pk1>",views.Upload_Answer),
      path("question/studentlist/<str:pk>",views.student_list_question),
      path("authenticator/",views.authenticator),
-     path("test/<str:pk>/<str:pk1>",views.getStudent),
+     path("results/<str:pk>",views.getStudentPerformance),
 
 
 ]

@@ -223,6 +223,7 @@ def Upload_Answer(request,pk,pk1):
         ans=Answer.objects.filter(question=question,student=Student.objects.get(user=request.user)).count()
         ans1=Answer.objects.filter(question=question,student=Student.objects.get(user=request.user))
         s=s*(question.marks)
+        s=round(s,2)
         if((ans)>0):
             ans1.delete()
         
@@ -265,4 +266,29 @@ def getStudent(request,pk,pk1):
         l+=[m]    
     
     return l
+
+
+def getStudentPerformance(request,pk):
+    test=Test.objects.get(id=pk)
+    question=test.questions.all()
+    s=test.classroom.student.all()
+    l=[]
+    
+        
+    for j in question:
+            m=[]
+            try:
+                a=Answer.objects.filter(question=j,student=Student.objects.get(user=request.user))
+                if(a.count()==0):
+                    m+=[j,j.marks,"Not Attempted"]
+                for i in a:
+                    m+=[j,j.marks,round(i.awarded_marks,2)]
+
+            except:
+                m+=["Not Attempted"]
+            l+=[m]
+                
+    
+    
+    return render(request,"viewResuts.html",{"l":l})
     
