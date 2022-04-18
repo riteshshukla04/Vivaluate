@@ -134,36 +134,27 @@
         <div class="col-8 my-2">
             <table class="table table-hover table-striped">
                 <thead style="background-color: #4bc0ba;">
+                    
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col" >Name</th>
-                      <th scope="col">Question 1</th>
-                      <th scope="col">Question 2</th>
-                      <th scope="col">Question 3</th>
+                      {% for i in s %}
+                      <th scope="col">Question {{i}}</th>
+                     {% endfor %}
                     </tr>
                   </thead>
                   <tbody style="background-color: aliceblue;">
+                    {% for i in l %}
                     <tr>
-                        <td>1</td>
-                        <td>G</td>
-                        <td>5</td>
-                        <td>86</td>
-                        <td>5</td>
+                        
+                        {% for j in i%}
+                            <td>{{j}}</td>
+                            
+                        {% endfor %}
+                        
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>G</td>
-                        <td>5</td>
-                        <td>86</td>
-                        <td>5</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>G</td>
-                        <td>5</td>
-                        <td>86</td>
-                        <td>5</td>
-                    </tr>
+                    {% endfor %}
+                   
                 </tbody>
             </table>
         </div>

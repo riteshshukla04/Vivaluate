@@ -181,7 +181,12 @@ def questionList(request,pk,pk1):
     test=Test.objects.get(id=pk)
     classroom=Classroom.objects.get(id=pk1)
     question=test.questions.all()
-    return render(request,"questionList.html",{"question":question,"pk":pk,"pk1":pk1,"test":test})
+    l=getStudent(request,pk,pk1)
+    s=""
+    print(l)
+    for i in range(len(question)):
+        s+=str(i)
+    return render(request,"questionList.html",{"question":question,"pk":pk,"s":s,"pk1":pk1,"test":test,"l":l})
 
 
 def createQuestion(request,pk,pk1):
@@ -213,7 +218,7 @@ def Upload_Answer(request,pk,pk1):
         
         image=request.FILES["file"]
         s=GoogleOCR(image)
-        print(s)
+        
         s=cosineAnswer(question.correct_answer,s)
         ans=Answer.objects.filter(question=question,student=Student.objects.get(user=request.user)).count()
         ans1=Answer.objects.filter(question=question,student=Student.objects.get(user=request.user))
@@ -243,10 +248,21 @@ def authenticator(request):
 def getStudent(request,pk,pk1):
     test=Test.objects.get(id=pk)
     question=test.questions.all()
+    s=test.classroom.student.all()
     l=[]
-    for i in question:
-        m=[]
-        answer=Answer.objects.filter(question=i)
-        
-    return HttpResponse("Hello World")
+    for i in s:
+       
+        m=[i.register_number]
+        m+=[i.name]
+        for j in question:
+            try:
+                a=Answer.objects.get(question=j,student=i)
+                m+=[a.awarded_marks]
+
+            except:
+                m+=["Not Attempted"]
+
+        l+=[m]    
+    
+    return l
     
