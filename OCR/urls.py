@@ -25,12 +25,13 @@ urlpatterns = [
     path("createtest/<str:pk>",views.createTest),
     path("testlist/<str:pk>",views.TestList),
     path("questionlist/<str:pk>/<str:pk1>",views.questionList),
-     path("createquestion/<str:pk>",views.createQuestion),
+     path("createquestion/<str:pk>/<str:pk1>",views.createQuestion),
      path("testlists/<str:pk>",views.TestListStudent),
      path("questionlists/<str:pk>",views.questionListStudent),
      path("uploadanswer/<str:pk>/<str:pk1>",views.Upload_Answer),
      path("question/studentlist/<str:pk>",views.student_list_question),
      path("authenticator/",views.authenticator),
+     path("test/<str:pk>/<str:pk1>",views.getStudent),
 
 
 ]

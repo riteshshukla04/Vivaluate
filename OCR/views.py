@@ -8,11 +8,13 @@ import pytesseract
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
+
+from OCR.cosine import cosineAnswer
 from .models import *
 from .forms import CreateUserForm
 import random,string
 from .decorators import *
-
+from .googlevision import GoogleOCR
 
 
 @authenticated_user
@@ -73,8 +75,10 @@ def index(request):
     s=""
     if (request.method=="POST"):
         img=request.FILES["answersheet"]
-        img=Image.open(img)
-        s=(pytesseract.image_to_string(img))
+     
+        
+        s=GoogleOCR(img)
+        
         
 
     return render(request,"index.html",{"s":s})
@@ -177,10 +181,10 @@ def questionList(request,pk,pk1):
     test=Test.objects.get(id=pk)
     classroom=Classroom.objects.get(id=pk1)
     question=test.questions.all()
-    return render(request,"questionList.html",{"question":question,"pk":pk,"test":test})
+    return render(request,"questionList.html",{"question":question,"pk":pk,"pk1":pk1,"test":test})
 
 
-def createQuestion(request,pk):
+def createQuestion(request,pk,pk1):
     if request.method=="POST":
         name=request.POST["name"]
         marks=request.POST["marks"]
@@ -190,7 +194,7 @@ def createQuestion(request,pk):
         test=Test.objects.get(id=pk)
         test.questions.add(question)
         test.save()
-        return redirect(f"/questionlist/{pk}")
+        return redirect(f"/questionlist/{pk}/{pk1}")
     return render(request,"questionList.html")
 
 def TestListStudent(request,pk):
@@ -208,18 +212,17 @@ def Upload_Answer(request,pk,pk1):
         question=Question.objects.get(id=pk)
         
         image=request.FILES["file"]
-  
-
+        s=GoogleOCR(image)
+        print(s)
+        s=cosineAnswer(question.correct_answer,s)
         ans=Answer.objects.filter(question=question,student=Student.objects.get(user=request.user)).count()
         ans1=Answer.objects.filter(question=question,student=Student.objects.get(user=request.user))
-        print(ans)
+        s=s*(question.marks)
         if((ans)>0):
-            ans1.submitted=image
-            
-            return redirect(f"/questionlists/{pk1}")
-        else:
-            answer=Answer.objects.create(question=question,student=Student.objects.get(user=request.user),submitted=image,awarded_marks=10)
-            answer.save()
+            ans1.delete()
+        
+        answer=Answer.objects.create(question=question,student=Student.objects.get(user=request.user),submitted=image,awarded_marks=s)
+        answer.save()
         return redirect(f"/questionlists/{pk1}")
         
     return render(request,"uploadAnswer.html")
@@ -235,3 +238,15 @@ def authenticator(request):
                 return redirect("/teacher")
     else:
                 return redirect("/student")
+
+
+def getStudent(request,pk,pk1):
+    test=Test.objects.get(id=pk)
+    question=test.questions.all()
+    l=[]
+    for i in question:
+        m=[]
+        answer=Answer.objects.filter(question=i)
+        
+    return HttpResponse("Hello World")
+    
